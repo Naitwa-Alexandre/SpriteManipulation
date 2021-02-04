@@ -1,0 +1,67 @@
+.moon {
+    position: absolute;
+    width: 250px;
+    height: 250px;
+    border: 1px solid rgb(0, 0, 0, 0.3);
+    border-radius: 50%; /* convert the image in circus */
+    top: 40%; /* this lines centrilize the circus */
+    left: 50%; /* this lines centrilize the circus */
+    transform: translate(-50%, -50%); /* this lines centrilize the circus */
+    background: #d8d8d8; /* turns grey the circus */
+    box-shadow: inset 15px 15px 10px #999; /*this line apply border and the command "inset" invert the shadow.*/
+
+}
+.dog {
+    position: absolute;
+    top: 60%;
+    left: 50%;
+    background: transparent url('Dog.png') 0 0 no-repeat; /*we can refrence imgs and packed imgs here */
+    width: 290px; /* width and height based on height * number of frames downloaded */
+    height: 290px;
+    transform: translate(-50%, -50%);
+    margin: 2em auto;
+    animation: run 1s steps(21) infinite;
+}
+@keyframes run {
+    100% {
+        background-position: -6342px, 0; }
+    }
+
+p.loading {
+    width: 100%;
+    height: 10px;
+    font-family: monospace;
+    position: absolute;
+    left: 0;
+    bottom: -50px;
+    color: #4c4c4c;
+    font-size: 20px;
+    text-shadow: 1px 1px 1px #737373;
+    text-align: center;
+}
+input.left, input.right, spen.left, span.right {
+    position: absolute;
+    /*top: -10px; too mach better without this line */
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    z-index: 20;
+}
+span.left, span.right {
+    pointer-events: none;
+    color: #4c4c4c;
+    font-size: 20px;
+    text-shadow: 1px 1px 1px #737373;
+}
+input.left, span.left {
+    left: 0;
+}
+input.right, span.right {
+    right: 0;
+}
+input.left, input.right {
+    opacity: 0;
+}
+.left:checked ~ .dog {
+    transform: translate(-50%, -50%) rotateY(180deg);
+}
