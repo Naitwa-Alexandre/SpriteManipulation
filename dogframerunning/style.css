@@ -15,16 +15,16 @@
     position: absolute;
     top: 60%;
     left: 50%;
-    background: transparent url('Dog.png') 0 0 no-repeat; /*we can refrence imgs and packed imgs here */
-    width: 290px; /* width and height based on height * number of frames downloaded */
-    height: 290px;
-    transform: translate(-50%, -50%);
+    background: transparent url('dog.png') 0 0 no-repeat; /*we can refrence packed frames here */ 
+    width: 302px; /* results of 6342 / 21, that is the width of the packed frames (6342) divided the number of unpacked frames (21)*/
+    height: 205px; /* is the same height of packed frames */
+    transform: translate(-50%, -50%); /* centralize the frames  */
     margin: 2em auto;
-    animation: run 1s steps(21) infinite;
+    animation: run 1s steps(21) infinite; /* steps letteraly atributes "steps" to the frames it can be slow or fast depending on you, 21 is the number of frames in the unpacked folder */
 }
 @keyframes run {
-    100% {
-        background-position: -6342px, 0; }
+    100% { /* this means 100% round to some position */
+        background-position: -6342px, 0; } /* this animates the frame. -6342px represent the width of packed frame,  letteraly turns around to the left */
     }
 
 p.loading {
@@ -39,12 +39,12 @@ p.loading {
     text-shadow: 1px 1px 1px #737373;
     text-align: center;
 }
-input.left, input.right, spen.left, span.right {
+input.left, input.right, span.left, span.right {
     position: absolute;
-    /*top: -10px; too mach better without this line */
+    top: -10px; 
     width: 20px;
     height: 20px;
-    cursor: pointer;
+    cursor: pointer; /* change the cursor when its over the icone */
     z-index: 20;
 }
 span.left, span.right {
@@ -60,8 +60,8 @@ input.right, span.right {
     right: 0;
 }
 input.left, input.right {
-    opacity: 0;
+    opacity: 0; /* make the radios invisable so can click the arrows to direct the frames */
 }
 .left:checked ~ .dog {
-    transform: translate(-50%, -50%) rotateY(180deg);
+    transform: translate(-50%, -50%) rotateY(180deg); /* this line allow the frame to face the other side */
 }
