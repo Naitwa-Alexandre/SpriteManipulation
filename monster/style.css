@@ -16,10 +16,10 @@
     left: 50%;
     background: transparent url('monster.png') 0 0 no-repeat;
     width: 302px;
-    height: 205px;
+    height: 196px;
     transform: translate(-50%, -50%);
     margin: 2em auto;
-    animation: run 1s steps(21) infinite;
+    animation: run 0.6s steps(21) infinite;
 }
 @keyframes run {
     100% {
