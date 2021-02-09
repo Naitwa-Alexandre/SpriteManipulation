@@ -17,9 +17,11 @@ const player = { //this object store all data about our player character.
 };
 
 const playerSprite = new Image(); // creates an new image object.
-playerSprite.src = 'images/mandalorian2.png'; // path to our spritesheet.
+playerSprite.src = 'images/hansolo.png'; // path to our spritesheet.
 const background = new Image(); //creates an new image object.
 background.src = 'images/background.png'; // path to our background.
+const playerPet = new Image();
+playerPet.src = 'images/chewie.png';
 
 
 
@@ -27,43 +29,67 @@ function drawSprite(img, sX, sY, sW, sH, dX, dY, dW, dH){ //this method draw the
     ctx.drawImage(img, sX, sY, sW, sH, dX, dY, dW, dH);
 }
 
-
-
-
-function animate(){ //this function serves to animation loop
-    ctx.clearRect(0, 0, canvas.width, canvas.height); //clear entire canvas between animation frame loop.
-    ctx.drawImage(background, 0, 0, canvas.width, canvas.height); //canvas method to draw image in the screen. first argument is the image you wanted to draw, the second and third arguments are coordinates of top left corner to start drawing from. and the last 2 arguments are the width and height of the area we want our image to fit into.
-    drawSprite(playerSprite, player.width * player.frameX, player.height * player.frameY, player.width, player.height, player.x, player.y, player.width, player.height); // all player atributes and locations to be drawing in the canvas.
-    movePlayer(); //call the function that allows the player movement in canvas.
-    requestAnimationFrame(animate); //this command will run this function again and again, creating our animation loop.
-}
-animate(); //call the function animate to show the content
-
 window.addEventListener('keydown', function(e){ //event listener to keydown event to track the commands
     keys[e.key] = true; //when we press a bottom we add this command to keys array
-    console.log(keys);
+    player.moving = true; //animates the walking frame
 });
 
 window.addEventListener('keyup', function(e){ //event listener to keydown event to track the commands
     delete keys[e.key]; //when we released a bottom and keyup event occurs we remove that bottom from keys array
-    
+    player.moving = false; //stop the animation of walking
 });
 
 function movePlayer(){
-    if (keys['ArrowUp'] && player.y > 100) { //if ArrowUp is true and player in y-axis is more than 100 height then.
+    if (keys['ArrowUp'] && player.y > 100) { //if ArrowUp is true and player.y in y-axis is more than 100 height then.
         player.y -= player.speed; //move our character in the negative direction along the vertical y-axis.
         player.frameY = 3; // vertical coordinate of frame we cut out from our spritesheet. Responsable for the direction the frame is looking at.
+        player.moving = true; //animates the walking frame
     }
-    if (keys['ArrowDown'] && player.y < 450){ //if ArrowDown and player is minus than 400 height then.
+    if (keys['ArrowDown'] && player.y < canvas.height - player.height){ //if ArrowDown is true and player.y is minus than (canvas.height - player.height) then.
         player.y += player.speed; //move our character in the positive direction along the vertical y-axis.
         player.frameY = 0; // vertical coordinate of frame we cut out from our spritesheet. Responsable for the direction the frame is looking at.
+        player.moving = true; //animates the walking frame
     }
-    if (keys['ArrowLeft'] && player.x > 0){ //if ArrowLeft is true and player in x-axis is more than 0 width then.
+    if (keys['ArrowLeft'] && player.x > 0){ //if ArrowLeft is true and player.x in x-axis is more than 0 width then.
         player.x -= player.speed; //move our character in the negative direction along the horizontal x-axis.
         player.frameY = 1; // vertical coordinate of frame we cut out from our spritesheet. Responsable for the direction the frame is looking at.
+        player.moving = true; //animates the walking frame
     }
-    if (keys['ArrowRight'] && player.x < 750){ //if ArrowRight is true and player in x-axis is minus than 700 then.
+    if (keys['ArrowRight'] && player.x < canvas.width - player.width){ //if ArrowRight is true and player.x x-axis is minus than (canvas.width - player width) then.
         player.x += player.speed; //move our character in the positive direction along the horizontal x-axis.
         player.frameY = 2; // vertical coordinate of frame we cut out from our spritesheet. Responsable for the direction the frame is looking at.
+        player.moving = true; //animates the walking frame
+    }
+};
+
+function handlePlyerFrame(){
+    if (player.frameX < 3 && player.moving) player.frameX++; //this is setted 3 because of the number of sprites, in this case 0 to 3. player.moving animates the walking movement.
+    else player.frameX = 0; //otherwise back to frame 0, that means standing
+}
+
+//this method is going well no matters how strong user's PC is.
+let fps, fpsInterval, startTime, now, then, elapsed; //global variables that gonna help us to animate the frames.
+
+function startAnimating(fps){ //kick off animation group, based on fps we pass to it as an atribute when we call it.
+    fpsInterval = 1000/fps; //fpsInterval receves 1 second/parameter. Determines how long we wait before we serve the next frame.
+    then = Date.now(); // Date.now() is a object JavaScript which returns the number of milliseconds elapsed since January the 1st 1970.
+    startTime = then; // we freeze that value in this variable.
+    animate(); //call the function animate to show the content
+}
+
+function animate(){
+    requestAnimationFrame(animate); //this function will call itself recursively over and over.
+    now = Date.now();
+    elapsed = now - then; //elapsed gonna be the difference between now and then
+    if (elapsed > fpsInterval){
+        then = now - (elapsed % fpsInterval);
+        ctx.clearRect(0, 0, canvas.width, canvas.height); //clear entire canvas between animation frame loop.
+        ctx.drawImage(background, 0, 0, canvas.width, canvas.height); //canvas method to draw image in the screen. first argument is the image you wanted to draw, the second and third arguments are coordinates of top left corner to start drawing from. and the last 2 arguments are the width and height of the area we want our image to fit into.
+        drawSprite(playerSprite, player.width * player.frameX, player.height * player.frameY, player.width, player.height, player.x, player.y, player.width, player.height); // all player atributes and locations to be drawing in the canvas.
+        drawSprite(playerPet, 40 * player.frameX, 72 * player.frameY, 40, 72, player.x - 30, player.y - 20, 40, 72); //pet reference (chewie);
+        movePlayer(); //call the function that allows the player movement in canvas.
+        handlePlyerFrame();
+        requestAnimationFrame(animate); //this command will run this function again and again, creating our animation loop.
     }
 }
+startAnimating(30); //setted to 30 frames per second.
