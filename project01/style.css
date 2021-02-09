@@ -12,8 +12,8 @@ body {
     left: -200%;
     width: 500%;
     height: 500%;
-    background: url('floor/Brick_01.png');
-    transform: rotate3d(1, 0, 1, 50deg);
+    background: url('floor/Brick_01.png'); /* the path of image */
+    transform: rotate3d(1, 0, 1, 50deg);   
 
 }
 canvas {

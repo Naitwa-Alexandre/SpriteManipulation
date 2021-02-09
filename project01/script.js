@@ -9,19 +9,19 @@ const images = {};
 images.player = new Image();
 images.player.src = 'cup.png'; // spritesheet frames
 
-const numberOfCharacters = 100;
-const characters = [];
+const numberOfCharacters = 100; //counts the number of characters
+const characters = []; //made to multiply the number of characters on the screen.
 
 const characterActions = ['up', 'top right', 'right', 'down right', 'down', 'jump']; // each movement of sprites sheet.
 
 
 class Character { //this is doing when we need copys of objects
     constructor(){ //run just once an object
-        this.width = 103.0625;
-        this.height = 113.125;
-        this.frameX = 3;
-        this.x = Math.random() * canvas.width;
-        this.y = Math.random() * canvas.height;
+        this.width = 103.0625; // width of packed frames divided per number of sprites. in this case 1649 / 16.
+        this.height = 113.125; // height of packed framed divided per number of conlums of sprites, wich is 8. 905 / 8
+        this.frameX = 3; //walking animation starts at 3 frame.
+        this.x = Math.random() * canvas.width; //character appers from anywhere on screen
+        this.y = Math.random() * canvas.height; //character appers from anywhere on screen
         this.speed = (Math.random() * 3.5) + 1.5;
         this.action = characterActions[Math.floor(Math.random() * characterActions.length)];
         if (this.action === 'up') {
@@ -44,7 +44,6 @@ class Character { //this is doing when we need copys of objects
     }
     draw(){
         drawSprite(images.player, this.width * this.frameX, this.height * this.frameY, this.width, this.height, this.x, this.y, this.width, this.height);
-
         if (this.frameX < this.maxFrame) this.frameX++; //animation to move
         else this.frameX = this.minFrame;
     }
@@ -58,8 +57,8 @@ class Character { //this is doing when we need copys of objects
             }
         } else if (this.action === 'up'){
             if (this.y < (0 - this.height)){
-                this.y = canvas.height + this.height;
-                this.x = Math.random() * canvas.width; 
+                this.y = canvas.height + this.height; //player appers from bottom to up
+                this.x = Math.random() * canvas.width;  
             } else {
                 this.y -= this.speed;
             }
@@ -75,7 +74,7 @@ class Character { //this is doing when we need copys of objects
     }
 }
 for (let i = 0; i < numberOfCharacters; i++){
-    characters.push(new Character());
+    characters.push(new Character()); //creates 1 new Character based in numberOfCharacters
 }
 
 
@@ -92,9 +91,9 @@ function animate() {
     }
 }
 
-window.onload = setInterval(animate, 1000/20);
+window.onload = setInterval(animate, 1000/30); //animate the screen with this time of reaload.
 
-window.addEventListener('resize', function(){
+window.addEventListener('resize', function(){ //prevein the sprites streches on window risize.
     canvas.height = window.innerHeight;
     canvas.width = window.innerWidth;
 });
